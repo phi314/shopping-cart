@@ -1,0 +1,16 @@
+/* React Transition Group */
+.fade.enter {
+    opacity: 0.01;
+}
+
+.fade.enter-active {
+    opacity: 1;
+}
+
+.fade.exit {
+    opacity: 1;
+}
+
+.fade.exit-active {
+    opacity: 0;
+}

@@ -1,0 +1,3 @@
+{
+    "mongoURI": "mongodb+srv://phi314:phi314@cluster-master-npoqs.mongodb.net/test?retryWrites=true&w=majority"
+}
