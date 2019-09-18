@@ -9,6 +9,8 @@ import {
     NavLink,
     Container
 } from 'reactstrap';
+// import loginModal from '../auth/loginModal';
+import { RegisterModal } from '../auth/registerModal';
 
 class AppNavbar extends Component {
     state = {
@@ -24,14 +26,17 @@ class AppNavbar extends Component {
     render() {
         return (
             <React.Fragment>
-                <Navbar color='dark' dark expand='sm' className='mb-5'>
+                <Navbar color="dark" dark expand="sm" className="mb-5">
                     <Container>
-                        <NavbarBrand href='/'>Shopping List</NavbarBrand>
+                        <NavbarBrand href="/">Shopping List</NavbarBrand>
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>
-                            <Nav className='ml-auto' navbar>
+                            <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    <NavLink href='/login'>Login</NavLink>
+                                    <NavLink href="/login">Login</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <RegisterModal />
                                 </NavItem>
                             </Nav>
                         </Collapse>
