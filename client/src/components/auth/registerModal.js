@@ -74,7 +74,7 @@ export class RegisterModal extends Component {
     render() {
         return (
             <React.Fragment>
-                <NavLink href="#" onClick={this.toggle}>
+                <NavLink href='#' onClick={this.toggle}>
                     Register
                 </NavLink>
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
@@ -82,41 +82,41 @@ export class RegisterModal extends Component {
                     <Form onSubmit={this.onSubmit}>
                         <ModalBody>
                             {this.state.message ? (
-                                <Alert color="danger">{this.state.message} </Alert>
+                                <Alert color='danger'>{this.state.message} </Alert>
                             ) : null}
                             <FormGroup>
-                                <Label for="user">Name</Label>
+                                <Label for='user'>Name</Label>
                                 <Input
-                                    type="text"
-                                    name="name"
-                                    id="item"
-                                    placeholder="Name"
+                                    type='text'
+                                    name='name'
+                                    id='item'
+                                    placeholder='Name'
                                     onChange={this.onChange}
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="user">Email</Label>
+                                <Label for='user'>Email</Label>
                                 <Input
-                                    type="email"
-                                    name="email"
-                                    id="email"
-                                    placeholder="Email"
+                                    type='email'
+                                    name='email'
+                                    id='email'
+                                    placeholder='Email'
                                     onChange={this.onChange}
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="user">Passowrd</Label>
+                                <Label for='user'>Passowrd</Label>
                                 <Input
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    placeholder="Password"
+                                    type='password'
+                                    name='password'
+                                    id='password'
+                                    placeholder='Password'
                                     onChange={this.onChange}
                                 />
                             </FormGroup>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="dark" type="submit" block>
+                            <Button color='dark' type='submit' block>
                                 Register
                             </Button>
                         </ModalFooter>

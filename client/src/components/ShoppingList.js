@@ -9,6 +9,11 @@ import { getItems, deleteItems } from '../actions/itemActions';
 import ItemModal from './layouts/ItemModal';
 
 class ShoppingList extends Component {
+    static propTypes = {
+        getItems: PropTypes.func.isRequired,
+        item: PropTypes.object.isRequired
+    };
+
     componentDidMount() {
         this.props.getItems();
     }
@@ -24,14 +29,14 @@ class ShoppingList extends Component {
                 <ItemModal />
 
                 <ListGroup>
-                    <TransitionGroup className="shopping-list">
+                    <TransitionGroup className='shopping-list'>
                         {items.map(({ _id, name }) => (
-                            <CSSTransition key={_id} timeout={500} className="show fade">
+                            <CSSTransition key={_id} timeout={500} className='show fade'>
                                 <ListGroupItem>
                                     <Button
-                                        color="danger"
-                                        className="mr-2"
-                                        size="sm"
+                                        color='danger'
+                                        className='mr-2'
+                                        size='sm'
                                         onClick={this.onDeleteClick.bind(this, _id)}
                                     >
                                         &times;
@@ -46,11 +51,6 @@ class ShoppingList extends Component {
         );
     }
 }
-
-ShoppingList.propTypes = {
-    getItems: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired
-};
 
 const mapStateToProps = state => ({
     item: state.item

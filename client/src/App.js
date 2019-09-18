@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import AppNavbar from './components/layouts/Navbar';
+import AppNavbar from './components/layouts/AppNavbar';
 import ShoppingList from './components/ShoppingList';
 
 import { Provider } from 'react-redux';
