@@ -10,6 +10,7 @@ import ItemModal from './layouts/ItemModal';
 
 class ShoppingList extends Component {
     static propTypes = {
+        isAuthenticated: PropTypes.bool,
         getItems: PropTypes.func.isRequired,
         item: PropTypes.object.isRequired
     };
@@ -24,23 +25,28 @@ class ShoppingList extends Component {
 
     render() {
         const { items } = this.props.item;
+        const { isAuthenticated } = this.props;
         return (
             <Container>
                 <ItemModal />
 
                 <ListGroup>
-                    <TransitionGroup className='shopping-list'>
+                    <TransitionGroup className="shopping-list">
                         {items.map(({ _id, name }) => (
-                            <CSSTransition key={_id} timeout={500} className='show fade'>
+                            <CSSTransition key={_id} timeout={500} className="show fade">
                                 <ListGroupItem>
-                                    <Button
-                                        color='danger'
-                                        className='mr-2'
-                                        size='sm'
-                                        onClick={this.onDeleteClick.bind(this, _id)}
-                                    >
-                                        &times;
-                                    </Button>
+                                    {isAuthenticated ? (
+                                        <Button
+                                            color="danger"
+                                            className="mr-2"
+                                            size="sm"
+                                            onClick={this.onDeleteClick.bind(this, _id)}
+                                        >
+                                            &times;
+                                        </Button>
+                                    ) : (
+                                        ''
+                                    )}
                                     {name}
                                 </ListGroupItem>
                             </CSSTransition>
@@ -53,7 +59,8 @@ class ShoppingList extends Component {
 }
 
 const mapStateToProps = state => ({
-    item: state.item
+    item: state.item,
+    isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
     Button,
     Modal,
@@ -15,6 +15,7 @@ import {
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { register } from '../../actions/authActions';
+import { clearErrors } from '../../actions/errorActions';
 
 export class RegisterModal extends Component {
     state = {
@@ -28,11 +29,12 @@ export class RegisterModal extends Component {
     static propTypes = {
         isAuthenticated: PropTypes.bool,
         error: PropTypes.object.isRequired,
-        register: PropTypes.func.isRequired
+        register: PropTypes.func.isRequired,
+        clearErrors: PropTypes.func.isRequired
     };
 
     componentDidUpdate(prevProps) {
-        const { error } = this.props;
+        const { error, isAuthenticated } = this.props;
         if (error !== prevProps.error) {
             // Check for register error
             if (error.id === 'REGISTER_FAIL') {
@@ -45,9 +47,19 @@ export class RegisterModal extends Component {
                 });
             }
         }
+
+        // If authenticated, close modal
+        if (this.state.modal) {
+            if (isAuthenticated) {
+                this.toggle();
+            }
+        }
     }
 
     toggle = () => {
+        // Clear errors
+        this.props.clearErrors();
+
         this.setState({
             modal: !this.state.modal
         });
@@ -73,8 +85,8 @@ export class RegisterModal extends Component {
 
     render() {
         return (
-            <React.Fragment>
-                <NavLink href='#' onClick={this.toggle}>
+            <Fragment>
+                <NavLink href="#" onClick={this.toggle}>
                     Register
                 </NavLink>
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
@@ -82,47 +94,47 @@ export class RegisterModal extends Component {
                     <Form onSubmit={this.onSubmit}>
                         <ModalBody>
                             {this.state.message ? (
-                                <Alert color='danger'>{this.state.message} </Alert>
+                                <Alert color="danger">{this.state.message} </Alert>
                             ) : null}
                             <FormGroup>
-                                <Label for='user'>Name</Label>
+                                <Label for="user">Name</Label>
                                 <Input
-                                    type='text'
-                                    name='name'
-                                    id='item'
-                                    placeholder='Name'
+                                    type="text"
+                                    name="name"
+                                    id="item"
+                                    placeholder="Name"
                                     onChange={this.onChange}
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for='user'>Email</Label>
+                                <Label for="user">Email</Label>
                                 <Input
-                                    type='email'
-                                    name='email'
-                                    id='email'
-                                    placeholder='Email'
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    placeholder="Email"
                                     onChange={this.onChange}
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for='user'>Passowrd</Label>
+                                <Label for="user">Password</Label>
                                 <Input
-                                    type='password'
-                                    name='password'
-                                    id='password'
-                                    placeholder='Password'
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    placeholder="Password"
                                     onChange={this.onChange}
                                 />
                             </FormGroup>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color='dark' type='submit' block>
+                            <Button color="dark" type="submit" block>
                                 Register
                             </Button>
                         </ModalFooter>
                     </Form>
                 </Modal>
-            </React.Fragment>
+            </Fragment>
         );
     }
 }
@@ -134,5 +146,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { register }
+    { register, clearErrors }
 )(RegisterModal);

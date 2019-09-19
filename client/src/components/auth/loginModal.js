@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
     Button,
     Modal,
@@ -8,18 +8,57 @@ import {
     Form,
     FormGroup,
     Label,
-    Input
+    Input,
+    NavLink,
+    Alert
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { addItem } from '../../actions/itemActions';
+import PropTypes from 'prop-types';
+import { login } from '../../actions/authActions';
+import { clearErrors } from '../../actions/errorActions';
 
-export class ItemModal extends Component {
+export class LoginModal extends Component {
     state = {
         modal: false,
-        name: ''
+        email: '',
+        password: '',
+        message: null
     };
 
+    static propTypes = {
+        isAuthenticated: PropTypes.bool,
+        error: PropTypes.object.isRequired,
+        login: PropTypes.func.isRequired,
+        clearErrors: PropTypes.func.isRequired
+    };
+
+    componentDidUpdate(prevProps) {
+        const { error, isAuthenticated } = this.props;
+        if (error !== prevProps.error) {
+            // Check for register error
+            if (error.id === 'LOGIN_FAIL') {
+                this.setState({
+                    message: error.message.message
+                });
+            } else {
+                this.setState({
+                    message: null
+                });
+            }
+        }
+
+        // If authenticated, close modal
+        if (this.state.modal) {
+            if (isAuthenticated) {
+                this.toggle();
+            }
+        }
+    }
+
     toggle = () => {
+        // Clear errors
+        this.props.clearErrors();
+
         this.setState({
             modal: !this.state.modal
         });
@@ -32,58 +71,68 @@ export class ItemModal extends Component {
     onSubmit = e => {
         e.preventDefault();
 
-        const newItem = {
-            name: this.state.name
+        const { email, password } = this.state;
+        const user = {
+            email,
+            password
         };
 
-        // Add item via addItem action
-        this.props.addItem(newItem);
-
-        // Close Modal
-        this.toggle();
+        // Attemp to login
+        this.props.login(user);
     };
 
     render() {
         return (
-            <div>
-                <Button color="info" className="mb-2" onClick={this.toggle}>
-                    Add Item
-                </Button>
+            <Fragment>
+                <NavLink href="#" onClick={this.toggle}>
+                    Login
+                </NavLink>
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>Add to Shopping List</ModalHeader>
+                    <ModalHeader toggle={this.toggle}>Login</ModalHeader>
                     <Form onSubmit={this.onSubmit}>
                         <ModalBody>
+                            {this.state.message ? (
+                                <Alert color="danger">{this.state.message} </Alert>
+                            ) : null}
                             <FormGroup>
-                                <Label for="item">Name</Label>
+                                <Label for="user">Email</Label>
                                 <Input
-                                    type="text"
-                                    name="name"
-                                    id="item"
-                                    placeholder="Add shopping item"
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    placeholder="Email"
+                                    onChange={this.onChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="user">Password</Label>
+                                <Input
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    placeholder="Password"
                                     onChange={this.onChange}
                                 />
                             </FormGroup>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="primary" type="submit">
-                                Submit
-                            </Button>{' '}
-                            <Button color="secondary" onClick={this.toggle}>
-                                Cancel
+                            <Button color="dark" type="submit" block>
+                                Login
                             </Button>
                         </ModalFooter>
                     </Form>
                 </Modal>
-            </div>
+            </Fragment>
         );
     }
 }
 
 const mapStateToProps = state => ({
-    item: state.item
+    isAuthenticated: state.auth.isAuthenticated,
+    error: state.error
 });
 
 export default connect(
     mapStateToProps,
-    { addItem }
-)(ItemModal);
+    { login, clearErrors }
+)(LoginModal);
